@@ -49,19 +49,19 @@ docker compose up --build
 http://localhost:8080
 ```
 
-### Swagger
+### Swagger para consultar os endpoints disponíveis e ter base para os testes:
 
 ```text
 http://localhost:8080/swagger-ui/index.html
 ```
 
-### OpenAPI
+### OpenAPI:
 
 ```text
 http://localhost:8080/api-docs
 ```
 
-### PostgreSQL
+### PostgreSQL:
 
 ```text
 Host: localhost
@@ -77,26 +77,10 @@ Password: postgres
 * Controle de transição de status
 * Classificação automática de risco
 * Associação de membros via API mockada
-* Relatório consolidado do portfólio
+* Relatório do portfólio de projetos
 * Paginação de projetos
 * Tratamento global de exceções
 * Documentação Swagger/OpenAPI
-* Testes unitários com cobertura via JaCoCo
+* Testes unitários com JUnit
 
-## 🧪 Executando os Testes
 
-```bash
-mvn test
-```
-
-## 📊 Relatório de Cobertura
-
-```bash
-mvn clean verify
-```
-
-Relatório gerado em:
-
-```text
-target/site/jacoco/index.html
-```
