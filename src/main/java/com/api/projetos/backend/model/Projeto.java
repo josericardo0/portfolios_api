@@ -40,6 +40,4 @@ public class Projeto {
     @ManyToMany
     private List<MembroProjeto> membros;
 
-
-
 }

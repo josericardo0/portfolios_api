@@ -93,7 +93,10 @@ public class RelatorioService {
         return projetoRepository.findAll()
                 .stream()
                 .flatMap(projeto ->
-                        projeto.getMembros().stream()
+
+                        projeto.getMembros() == null
+                                ? java.util.stream.Stream.empty()
+                                : projeto.getMembros().stream()
                 )
                 .map(MembroProjeto::getMembroId)
                 .distinct()

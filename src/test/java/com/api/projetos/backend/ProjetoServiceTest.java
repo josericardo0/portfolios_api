@@ -2,6 +2,7 @@ package com.api.projetos.backend;
 
 import com.api.projetos.backend.client.MembroClient;
 import com.api.projetos.backend.dto.AtualizarStatusProjetoRequest;
+import com.api.projetos.backend.dto.MembroResponse;
 import com.api.projetos.backend.enums.StatusProjeto;
 import com.api.projetos.backend.exception.RecursoNaoEncontradoException;
 import com.api.projetos.backend.mapper.ProjetoMapper;
@@ -82,6 +83,8 @@ class ProjetoServiceTest {
 
         Projeto projeto = new Projeto();
 
+        projeto.setGerenteId(1L);
+
         projeto.setStatusProjeto(
                 StatusProjeto.EM_ANALISE
         );
@@ -91,6 +94,15 @@ class ProjetoServiceTest {
 
         when(repository.save(any()))
                 .thenReturn(projeto);
+
+        when(membroClient.buscar(1L))
+                .thenReturn(
+                        new MembroResponse(
+                                1L,
+                                "José",
+                                "GERENTE"
+                        )
+                );
 
         AtualizarStatusProjetoRequest request =
                 new AtualizarStatusProjetoRequest(

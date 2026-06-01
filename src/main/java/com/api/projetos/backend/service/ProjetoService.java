@@ -8,6 +8,7 @@ import com.api.projetos.backend.exception.RegraDeNegocioException;
 import com.api.projetos.backend.mapper.ProjetoMapper;
 import com.api.projetos.backend.model.MembroProjeto;
 import com.api.projetos.backend.model.Projeto;
+import com.api.projetos.backend.repository.MembroProjetoRepository;
 import com.api.projetos.backend.repository.ProjetoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,14 +26,31 @@ public class ProjetoService {
     private final CalculoRiscoService calculoRiscoService;
     private final StatusTransicaoService statusTransicaoService;
     private final MembroClient membroClient;
+    private final MembroProjetoRepository membroProjetoRepository;
 
-
-    public ProjetoService(ProjetoRepository projetoRepository, ProjetoMapper projetoMapper, CalculoRiscoService calculoRiscoService, StatusTransicaoService statusTransicaoService, MembroClient membroClient) {
+    public ProjetoService(ProjetoRepository projetoRepository, ProjetoMapper projetoMapper, CalculoRiscoService calculoRiscoService, StatusTransicaoService statusTransicaoService, MembroClient membroClient, MembroProjetoRepository membroProjetoRepository) {
         this.projetoRepository = projetoRepository;
         this.projetoMapper = projetoMapper;
         this.calculoRiscoService = calculoRiscoService;
         this.statusTransicaoService = statusTransicaoService;
         this.membroClient = membroClient;
+        this.membroProjetoRepository = membroProjetoRepository;
+    }
+
+    private ProjetoResponse montarResponse(
+            Projeto projeto
+    ) {
+
+        MembroResponse gerente =
+                membroClient.buscar(
+                        projeto.getGerenteId()
+                );
+
+        return projetoMapper.toResponse(
+                projeto,
+                gerente.nome(),
+                calculoRiscoService.calculate(projeto)
+        );
     }
 
     public ProjetoResponse criar(
@@ -40,6 +58,8 @@ public class ProjetoService {
     ) {
 
         validarMembros(request);
+
+        membroClient.buscar(request.gerenteId());
 
         Projeto projeto =
                 projetoMapper.toEntity(request);
@@ -56,22 +76,19 @@ public class ProjetoService {
                             MembroResponse response =
                                     membroClient.buscar(id);
 
-                            MembroProjeto membro =
-                                    new MembroProjeto();
+                            return membroProjetoRepository
+                                    .findById(response.membroId())
+                                    .orElseGet(() -> {
 
-                            membro.setMembroId(
-                                    response.membroId()
-                            );
+                                        MembroProjeto membro =
+                                                new MembroProjeto();
 
-                            membro.setNome(
-                                    response.nome()
-                            );
+                                        membro.setMembroId(response.membroId());
+                                        membro.setNome(response.nome());
+                                        membro.setFuncao(response.funcao());
 
-                            membro.setFuncao(
-                                    response.funcao()
-                            );
-
-                            return membro;
+                                        return membroProjetoRepository.save(membro);
+                                    });
                         })
                         .toList();
 
@@ -79,11 +96,7 @@ public class ProjetoService {
 
         projeto = projetoRepository.save(projeto);
 
-        return projetoMapper.toResponse(
-                projeto,
-                "Gerente",
-                calculoRiscoService.calculate(projeto)
-        );
+        return montarResponse(projeto);
     }
 
     @Transactional(readOnly = true)
@@ -91,11 +104,7 @@ public class ProjetoService {
 
         Projeto projeto = obterProjeto(id);
 
-        return projetoMapper.toResponse(
-                projeto,
-                "Gerente",
-                calculoRiscoService.calculate(projeto)
-        );
+        return montarResponse(projeto);
     }
 
     private void validarMembros(
@@ -174,11 +183,7 @@ public class ProjetoService {
 
         projeto = projetoRepository.save(projeto);
 
-        return projetoMapper.toResponse(
-                projeto,
-                "Gerente",
-                calculoRiscoService.calculate(projeto)
-        );
+        return montarResponse(projeto);
     }
 
     public ProjetoResponse atualizarStatus(
@@ -199,11 +204,7 @@ public class ProjetoService {
 
         projeto = projetoRepository.save(projeto);
 
-        return projetoMapper.toResponse(
-                projeto,
-                "Gerente",
-                calculoRiscoService.calculate(projeto)
-        );
+        return montarResponse(projeto);
     }
 
     public void excluir(UUID id) {
