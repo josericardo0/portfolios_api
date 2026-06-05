@@ -37,7 +37,6 @@ public class Projeto {
     @Enumerated(EnumType.STRING)
     private StatusProjeto statusProjeto;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<MembroProjeto> membros;
-
 }

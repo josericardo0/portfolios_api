@@ -31,13 +31,13 @@ public class TratamentoExcecaoGlobal {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErroResponse> tratarErroGenerico(
+    public ResponseEntity<String> tratarErroGenerico(
             Exception ex) {
+
+        ex.printStackTrace();
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErroResponse(
-                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                        "Erro interno do servidor"));
+                .body(ex.toString());
     }
 }

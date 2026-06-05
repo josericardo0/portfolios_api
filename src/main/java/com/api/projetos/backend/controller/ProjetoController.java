@@ -21,7 +21,7 @@ public class ProjetoController {
         this.projetoService = projetoService;
     }
 
-    @PostMapping
+    @PostMapping("/criar-projeto")
     public ResponseEntity<ProjetoResponse> criar(
             @Valid @RequestBody ProjetoRequest request
     ) {
@@ -34,7 +34,7 @@ public class ProjetoController {
                 .body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar-projeto/{id}")
     public ResponseEntity<ProjetoResponse> buscarPorId(
             @PathVariable UUID id
     ) {
@@ -44,7 +44,7 @@ public class ProjetoController {
         );
     }
 
-    @GetMapping
+    @GetMapping("/listar-projetos")
     public ResponseEntity<Page<ListagemProjetosResponse>> listar(
             Pageable pageable
     ) {
@@ -54,7 +54,7 @@ public class ProjetoController {
         );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar-projeto/{id}")
     public ResponseEntity<ProjetoResponse> atualizar(
             @PathVariable UUID id,
             @RequestBody AtualizarProjetoRequest request
@@ -65,7 +65,7 @@ public class ProjetoController {
         );
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/atualizar-status/{id}")
     public ResponseEntity<ProjetoResponse> atualizarStatus(
             @PathVariable UUID id,
             @RequestBody AtualizarStatusProjetoRequest request
@@ -76,7 +76,7 @@ public class ProjetoController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/excluir-projeto/{id}")
     public ResponseEntity<Void> excluir(
             @PathVariable UUID id
     ) {

@@ -18,7 +18,7 @@ public class MembroProjetoController {
         this.membroService = membroService;
     }
 
-    @PostMapping
+    @PostMapping("/criar-membro")
     public ResponseEntity<MembroResponse> criar(
             @RequestBody MembroRequest membroRequest
     ) {
@@ -27,7 +27,7 @@ public class MembroProjetoController {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar-membro/{id}")
     public ResponseEntity<MembroResponse> buscar(
             @PathVariable Long id
     ) {

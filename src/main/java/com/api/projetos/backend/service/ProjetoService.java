@@ -225,7 +225,18 @@ public class ProjetoService {
 
         return projetoRepository
                 .findAll(pageable)
-                .map(projetoMapper::toSummary);
+                .map(projeto ->
+
+                        new ListagemProjetosResponse(
+                                projeto.getId(),
+                                projeto.getNome(),
+                                projeto.getStatusProjeto(),
+                                calculoRiscoService.calculate(projeto),
+                                projeto.getOrcamentoTotal(),
+                                projeto.getDataInicio(),
+                                projeto.getDataTerminoPrevisto()
+                        )
+                );
     }
 
     private Projeto obterProjeto(UUID id) {

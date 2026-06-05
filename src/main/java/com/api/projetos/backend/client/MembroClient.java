@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 )
 public interface MembroClient {
 
-    @GetMapping("/mock-api/membros/{id}")
+    @GetMapping("/mock-api/membros/buscar-membro/{id}")
     MembroResponse buscar(
             @PathVariable Long id
     );

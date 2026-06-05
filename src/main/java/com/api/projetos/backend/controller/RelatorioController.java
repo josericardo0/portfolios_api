@@ -16,7 +16,7 @@ public class RelatorioController {
 
     private final RelatorioService relatorioService;
 
-    @GetMapping
+    @GetMapping("/gerar-relatorio")
     public ResponseEntity<RelatorioResponse> gerarRelatorio() {
 
         return ResponseEntity.ok(
