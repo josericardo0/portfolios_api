@@ -1,8 +1,8 @@
 # 📊 Sistema de Gestão de Portfólio de Projetos
 
-API REST desenvolvida com Spring Boot para gerenciamento do ciclo de vida de projetos, incluindo controle de status, classificação de risco, alocação de membros e geração de relatórios gerenciais.
+API REST desenvolvida com Java e Spring Boot para gerenciamento do ciclo de vida de projetos, incluindo controle de status, classificação de risco, alocação de membros e geração de relatórios.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Tecnologias utilizadas
 
 * Java 21
 * Spring Boot 3.5.14
